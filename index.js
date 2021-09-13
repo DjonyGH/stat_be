@@ -1,13 +1,26 @@
 const express = require('express')
-const issuerRouter = require('./routes/issuer.routes')
-const tradingRouter = require('./routes/trading.routes')
+require('dotenv').config()
+const sequelize = require('./db')
+const models = require('./models/index')
+// const issuerRouter = require('./routes/issuer.routes')
+// const tradingRouter = require('./routes/trading.routes')
 
 const PORT = process.env.PORT || 8080
 
 const app = express()
 
 app.use(express.json())
-app.use('/api', issuerRouter)
-app.use('/api', tradingRouter)
+// app.use('/api', issuerRouter)
+// app.use('/api', tradingRouter)
 
-app.listen(PORT, () => console.log(`Server has been started on port: ${PORT}`))
+const start = async () => {
+  try {
+    await sequelize.authenticate()
+    await sequelize.sync()
+    app.listen(PORT, () => console.log(`Server has been started on port: ${PORT}`))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+start()
