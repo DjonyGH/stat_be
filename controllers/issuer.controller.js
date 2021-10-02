@@ -12,31 +12,28 @@ class IssuerController {
   }
 
   async getIssuer(req, res) {
-    const id = req.params.id
-    const issuer = await db.query(`SELECT * FROM issuers WHERE id = $1`, [id])
-    res.json(issuer.rows[0])
+    const ticker = req.params.ticker.toUpperCase()
+    const issuer = await Issuer.findOne({ where: { ticker } })
+    res.json(issuer)
   }
 
   async getAllIssuers(req, res) {
-    const issuers = await db.query(`SELECT * FROM issuers`)
-    res.json(issuers.rows)
+    const issuers = await Issuer.findAll()
+    res.json(issuers)
   }
 
-  async updateIssuer(req, res) {
-    const id = req.params.id
-    const { name, ticker, rus_name } = req.body
-    const issuer = await db.query(
-      `UPDATE issuers SET name = $1, ticker = $2, rus_name = $3 WHERE id = $4 RETURNING *`,
-      [name, ticker, rus_name, id]
-    )
-    res.json(issuer.rows[0])
-  }
+  // async updateIssuer(req, res) {
+  //   const id = req.params.id
+  //   const { name, ticker, rus_name } = req.body
+  //   const issuer = await Issuer.update({ where: { ticker } })
+  //   res.json(issuer.rows[0])
+  // }
 
-  async deleteIssuer(req, res) {
-    const id = req.params.id
-    const issuer = await db.query(`DELETE FROM issuers WHERE id = $1`, [id])
-    res.json(issuer.rows[0])
-  }
+  // async deleteIssuer(req, res) {
+  //   const ticker = req.params.ticker
+  //   const issuer = await Issuer.drop({ where: { ticker } })
+  //   res.json(issuer)
+  // }
 }
 
 module.exports = new IssuerController()

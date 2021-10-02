@@ -6,8 +6,8 @@ const router = require('./routes/index')
 const sequelize = require('./db')
 const models = require('./models/index')
 
-const getIssuers = require('./jobs/getIssuers')
-// const getDividends = require('./jobs/getDividends')
+// const updateIssuersTable = require('./jobs/updateIssuersTable')
+const updateDividendsTable = require('./jobs/updateDividendsTable')
 
 const PORT = process.env.PORT || 8080
 
@@ -21,8 +21,8 @@ const start = async () => {
     await sequelize.authenticate()
     await sequelize.sync()
     app.listen(PORT, () => console.log(`Server has been started on port: ${PORT}`))
-    // getDividends()
-    // getIssuers()
+    updateDividendsTable()
+    // updateIssuersTable()
   } catch (error) {
     console.log(error)
   }

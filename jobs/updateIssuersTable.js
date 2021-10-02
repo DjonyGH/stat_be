@@ -2,9 +2,9 @@ const { default: axios } = require('axios')
 const cron = require('node-cron')
 const { Issuer } = require('../models/index')
 
-const getIssuers = () => {
+const updateIssuersTable = () => {
   cron.schedule('04 15 * * *', async () => {
-    console.log('---Start---')
+    console.log('---Start Update Issuers Table---')
     try {
       let allIssuers = []
       let start = 0
@@ -28,11 +28,11 @@ const getIssuers = () => {
       allIssuers.forEach(async (issuer) => {
         await Issuer.create({ name: '', ticker: issuer[3], rus_name: issuer[2] })
       })
-      console.log('---End---', allIssuers)
+      console.log('---End Update Issuers Table---')
     } catch (error) {
       console.log('error: ', error)
     }
   })
 }
 
-module.exports = getIssuers
+module.exports = updateIssuersTable
